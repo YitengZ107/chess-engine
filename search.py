@@ -1,91 +1,70 @@
-import random
 import chess
 from board_eval import evaluate_board
 
-def choose_random_move(board):
-    legal_moves = list(board.legal_moves)
+INFINITY = 1_000_000
 
-    if len(legal_moves) == 0:
-        return None
 
-    return random.choice(legal_moves)
-
-def choose_material_move(board):
-    best_move = None
-    white_to_move = board.turn == chess.WHITE
-
-    if white_to_move:
-        best_score = -999999
-    else:
-        best_score = 999999
-
-    for move in board.legal_moves:
-        board.push(move)
-        score = evaluate_board(board)
-        board.pop()
-
-        if white_to_move:
-            if score > best_score:
-                best_score = score
-                best_move = move
-        else:
-            if score < best_score:
-                best_score = score
-                best_move = move
-
-    return best_move
-
-def minimax(board, depth):
-    # Stop searching when the depth reaches zero
-    # or when the game has ended.
-    if depth == 0 or board.is_game_over():
+def alpha_beta(board, depth, alpha, beta):
+    if depth == 0 or board.is_game_over(claim_draw=True):
         return evaluate_board(board)
 
     if board.turn == chess.WHITE:
-        best_score = -999999
+        best_score = -INFINITY
 
         for move in board.legal_moves:
             board.push(move)
-            score = minimax(board, depth - 1)
+            score = alpha_beta(board, depth - 1, alpha, beta)
             board.pop()
 
             best_score = max(best_score, score)
+            alpha = max(alpha, best_score)
+
+            if beta <= alpha:
+                break
 
         return best_score
 
-    else:
-        best_score = 999999
+    best_score = INFINITY
 
-        for move in board.legal_moves:
-            board.push(move)
-            score = minimax(board, depth - 1)
-            board.pop()
+    for move in board.legal_moves:
+        board.push(move)
+        score = alpha_beta(board, depth - 1, alpha, beta)
+        board.pop()
 
-            best_score = min(best_score, score)
+        best_score = min(best_score, score)
+        beta = min(beta, best_score)
 
-        return best_score
-    
-def choose_minimax_move(board, depth):
+        if beta <= alpha:
+            break
+
+    return best_score
+
+
+def choose_best_move(board, depth):
     best_move = None
     white_to_move = board.turn == chess.WHITE
 
     if white_to_move:
-        best_score = -999999
+        best_score = -INFINITY
     else:
-        best_score = 999999
+        best_score = INFINITY
 
     for move in board.legal_moves:
         board.push(move)
-        score = minimax(board, depth - 1)
+        score = alpha_beta(
+            board,
+            depth - 1,
+            -INFINITY,
+            INFINITY
+        )
         board.pop()
 
-        if white_to_move:
-            if score > best_score:
-                best_score = score
-                best_move = move
-        else:
-            if score < best_score:
-                best_score = score
-                best_move = move
+        if white_to_move and score > best_score:
+            best_score = score
+            best_move = move
+
+        elif not white_to_move and score < best_score:
+            best_score = score
+            best_move = move
 
     return best_move

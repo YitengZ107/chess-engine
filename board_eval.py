@@ -38,3 +38,5 @@ def evaluate_board(board):
         score -= black_pieces * value
 
     return score
+
+# def position_score(board):
