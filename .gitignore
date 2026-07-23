@@ -1,5 +1,23 @@
+# Python
 __pycache__/
-*.pyc
+*.py[cod]
+backend/.venv/
 .venv/
+.pytest_cache/
+
+# Environment variables
 .env
+backend/.env
+
+# Stockfish binaries
+backend/bin/
+*.exe
+
+# Node
+frontend/node_modules/
+frontend/dist/
+
+# Editors and operating systems
+.vscode/
 .DS_Store
+Thumbs.db
