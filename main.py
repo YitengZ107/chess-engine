@@ -4,8 +4,7 @@ import chess
 
 from search import choose_best_move
 
-ENGINE_DEPTH = 4
-
+ENGINE_DEPTH = 5
 
 def choose_human_color() -> chess.Color:
     while True:
