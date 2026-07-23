@@ -1,7 +1,7 @@
 import sys
 import chess
 
-from search import choose_best_move
+from engine.search import choose_best_move
 
 ENGINE_NAME = "YitengChessEngine"
 ENGINE_AUTHOR = "Yiteng Zhang"

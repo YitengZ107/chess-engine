@@ -1,5 +1,5 @@
 import chess
-from board_eval import PIECE_VALUES, evaluate_board
+from engine.board_eval import PIECE_VALUES, evaluate_board
 
 INFINITY = 1000000
 

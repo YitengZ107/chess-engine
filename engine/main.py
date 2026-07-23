@@ -2,7 +2,7 @@ import random
 
 import chess
 
-from search import choose_best_move
+from engine.search import choose_best_move
 
 ENGINE_DEPTH = 5
 
